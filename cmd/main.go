@@ -10,7 +10,7 @@ import (
 	"syscall"
 
 	"cloud.google.com/go/pubsub"
-	converterengine "github.com/rrgaya/jesuita/pkg/converterEngine"
+	"github.com/rrgaya/jesuita/pkg/sender"
 )
 
 func main() {
@@ -97,7 +97,7 @@ func main() {
 
 	for msg := range urlMsg {
 		fmt.Println("<< CEIFADOR: Verificando mensagens no channel >>>")
-		converterengine.Process(msg)
+		sender.SendMessageToAPI(msg)
 	}
 
 	fmt.Println("<< CEIFADOR: Aguardando mensagens... >>>")
