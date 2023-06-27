@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  service:
+    container_name: mobills_conversion_service
+    build: .
+    volumes:
+      - .:/go/app
+    ports:
+      - 8080:8080
+    # env_file:
+      # - .env
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=./application_default_credentials.json
+
