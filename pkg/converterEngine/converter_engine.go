@@ -9,7 +9,7 @@ import (
 )
 
 func Process(urlToProcess string) {
-	fmt.Println("<<< PROCESS INITIATED >>>")
+	fmt.Println("<<< PROCESS INITIATED BY CEIFADOR >>>")
 
 	ctxTimeout, cancelTimeout := context.WithTimeout(context.Background(), time.Second*10)
 	defer cancelTimeout()
@@ -23,14 +23,13 @@ func Process(urlToProcess string) {
 		chromedp.Click(".cta__if.button.expanded", chromedp.ByQuery),
 	)
 	if err != nil {
-		fmt.Println("<<< ERROR: Ao tentar clicar no CTA. CHROMEDP >>>")
-		fmt.Printf("<<< ERROR: URLCAMPAING %s >>>\n", urlToProcess)
+		fmt.Println("<<<  CEIFADOR ERROR: Ao tentar clicar no CTA. CHROMEDP >>>")
+		fmt.Printf("<<< CEIFADOR ERROR: URLCAMPAING %s >>>\n", urlToProcess)
 		fmt.Println("ERROR CTA: ", err)
 		return
 	}
-
-	fmt.Println("<<< PROCESS: PASSOU DO CHROMEDP RUN >>>")
+	fmt.Println("<<< CEIFADOR PROCESS: PASSOU DO CHROMEDP RUN >>>")
 	time.Sleep(time.Millisecond * 500)
-	fmt.Println("<<< LOG: New Conversion >>> ")
+	fmt.Println("<<<  CEIFADOR LOG: New Conversion >>> ")
 
 }
