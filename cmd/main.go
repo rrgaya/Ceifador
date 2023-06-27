@@ -51,6 +51,9 @@ func main() {
 	// }
 
 	// Capture os sinais do sistema para interromper a execução do programa
+
+	urlMsg := make(chan string)
+
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, syscall.SIGINT, syscall.SIGTERM)
 
@@ -66,7 +69,9 @@ func main() {
 				err := subscription.Receive(ctx, func(ctx context.Context, msg *pubsub.Message) {
 					// Processar a mensagem recebida
 					UrlToConvert := string(msg.Data)
-					converterengine.Process(UrlToConvert)
+
+					urlMsg <- UrlToConvert
+
 					fmt.Printf("Mensagem recebida: %s\n", string(msg.Data))
 
 					// Confirmar o recebimento da mensagem
@@ -89,6 +94,11 @@ func main() {
 			log.Fatalf("Falha ao iniciar o servidor HTTP: %v", err)
 		}
 	}()
+
+	for msg := range urlMsg {
+		fmt.Println("<< CEIFADOR: Verificando mensagens no channel >>>")
+		converterengine.Process(msg)
+	}
 
 	fmt.Println("<< CEIFADOR: Aguardando mensagens... >>>")
 	<-stop
