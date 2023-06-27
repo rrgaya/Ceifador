@@ -24,12 +24,13 @@ func Process(urlToProcess string) {
 	)
 	if err != nil {
 		fmt.Println("<<<  CEIFADOR ERROR: Ao tentar clicar no CTA. CHROMEDP >>>")
+		fmt.Println(urlToProcess)
 		fmt.Printf("<<< CEIFADOR ERROR: URLCAMPAING %s >>>\n", urlToProcess)
 		fmt.Println("ERROR CTA: ", err)
 		return
 	}
 	fmt.Println("<<< CEIFADOR PROCESS: PASSOU DO CHROMEDP RUN >>>")
-	time.Sleep(time.Millisecond * 500)
+	time.Sleep(time.Second * 2)
 	fmt.Println("<<<  CEIFADOR LOG: New Conversion >>> ")
 
 }

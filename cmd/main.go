@@ -84,12 +84,13 @@ func main() {
 		http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 			fmt.Fprint(w, "Hello, Cloud Run!")
 		})
+		fmt.Println("<<< CEIFADOR: Started :8080 >>>")
 		if err := http.ListenAndServe(":8080", nil); err != nil {
 			log.Fatalf("Falha ao iniciar o servidor HTTP: %v", err)
 		}
 	}()
 
-	fmt.Println("Aguardando mensagens... Pressione Ctrl+C para sair.")
+	fmt.Println("<< CEIFADOR: Aguardando mensagens... >>>")
 	<-stop
 
 	// Feche o cliente do Pub/Sub ao final da execução
