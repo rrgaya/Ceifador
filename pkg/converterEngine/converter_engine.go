@@ -1,4 +1,4 @@
-package provider
+package converterengine
 
 import (
 	"context"
@@ -8,7 +8,7 @@ import (
 	"github.com/chromedp/chromedp"
 )
 
-func Process(urlToProcess, transactionIDToPrint string) {
+func Process(urlToProcess string) {
 	fmt.Println("<<< PROCESS INITIATED >>>")
 
 	ctxTimeout, cancelTimeout := context.WithTimeout(context.Background(), time.Second*10)
@@ -31,8 +31,6 @@ func Process(urlToProcess, transactionIDToPrint string) {
 
 	fmt.Println("<<< PROCESS: PASSOU DO CHROMEDP RUN >>>")
 	time.Sleep(time.Millisecond * 500)
+	fmt.Println("<<< LOG: New Conversion >>> ")
 
-	var response = map[string]string{}
-	response["TRANSACTION_ID"] = transactionIDToPrint
-	fmt.Printf("Conversão %s gerada.\n", transactionIDToPrint)
 }
