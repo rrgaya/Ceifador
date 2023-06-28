@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   service:
-    container_name: mobills_conversion_service
+    container_name: ceifador_service
     build: .
     volumes:
       - .:/go/app

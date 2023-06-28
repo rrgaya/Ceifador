@@ -11,6 +11,7 @@ import (
 )
 
 func main() {
+	log.Println("### CEIFADOR ### >>> MAIN")
 	// Defina o ID do projeto do Google Cloud e o nome da assinatura do Pub/Sub
 	projectID := "conversion-toolkit"
 	subscriptionName := "MySub"
@@ -39,12 +40,19 @@ func main() {
 	if err != nil {
 		log.Fatalf("Erro ao receber mensagens do Pub/Sub: %v", err)
 	}
+
+	log.Printf("Serviço Cloud Run em execução na porta 8001")
+	if err := http.ListenAndServe(":8080", nil); err != nil {
+		log.Fatalf("Erro ao iniciar o servidor HTTP: %v", err)
+	}
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
+	log.Println("### CEIFADOR ### >>> HANDLER")
 	fmt.Fprint(w, "Serviço Cloud Run em execução!")
 }
 
 func init() {
+	log.Println("### CEIFADOR ### >>> FUNC INIT")
 	http.HandleFunc("/", handler)
 }
