@@ -24,6 +24,6 @@ func Process(urlToProcess string) {
 	if err != nil {
 		log.Printf("### CEIFADOR ### >>> %q", err)
 	}
-	time.Sleep(time.Microsecond * 500)
+	time.Sleep(time.Second * 2)
 	log.Printf("### CEIFADOR ### >>> CONVERÇÃO FINALIZADA COM SUCESSO")
 }
