@@ -7,7 +7,7 @@ import (
 	"net/http"
 
 	"cloud.google.com/go/pubsub"
-	"github.com/rrgaya/jesuita/pkg/zeus"
+	"github.com/rrgaya/ceifador/pkg/zeus"
 )
 
 func main() {
