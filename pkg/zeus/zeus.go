@@ -9,7 +9,7 @@ import (
 )
 
 func Process(urlToProcess string) {
-	log.Printf("### CEIFADOR ### >>> INIT")
+	log.Printf("### CEIFADOR ### >>> INIT PROCESS")
 	ctxTimeout, cancelTimeout := context.WithTimeout(context.Background(), time.Second*10)
 	defer cancelTimeout()
 
