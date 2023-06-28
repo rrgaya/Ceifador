@@ -5,107 +5,46 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
-	"os/signal"
-	"syscall"
 
 	"cloud.google.com/go/pubsub"
-	"github.com/rrgaya/jesuita/pkg/sender"
+	"github.com/rrgaya/jesuita/pkg/zeus"
 )
 
 func main() {
-	// Defina o ID do projeto do Google Cloud e o nome do tópico
+	// Defina o ID do projeto do Google Cloud e o nome da assinatura do Pub/Sub
 	projectID := "conversion-toolkit"
-	topicName := "nova-conversao"
 	subscriptionName := "MySub"
 
-	// Crie um contexto
-	ctx := context.Background()
-
 	// Crie um cliente do Pub/Sub
+	ctx := context.Background()
 	client, err := pubsub.NewClient(ctx, projectID)
 	if err != nil {
 		log.Fatalf("Falha ao criar o cliente do Pub/Sub: %v", err)
 	}
 
-	// Crie uma referência para o tópico
-	topic := client.Topic(topicName)
-
-	// Verifique se o tópico existe
-	exists, err := topic.Exists(ctx)
-	if err != nil {
-		log.Fatalf("Falha ao verificar se o tópico existe: %v", err)
-	}
-	if !exists {
-		log.Fatalf("O tópico %s não existe", topicName)
-	}
-
-	// Crie uma assinatura durável para o tópico
+	// Crie uma referência para a assinatura do Pub/Sub
 	subscription := client.Subscription(subscriptionName)
 
-	// subscription, err := client.CreateSubscription(ctx, subscriptionName, pubsub.SubscriptionConfig{
-	// 	Topic: topic,
-	// })
-	// if err != nil {
-	// 	log.Fatalf("Falha ao criar a assinatura: %v", err)
-	// }
-
-	// Capture os sinais do sistema para interromper a execução do programa
-
-	urlMsg := make(chan string)
-
-	stop := make(chan os.Signal, 1)
-	signal.Notify(stop, syscall.SIGINT, syscall.SIGTERM)
-
-	// Inicie a goroutine para receber mensagens
-	go func() {
-		for {
-			select {
-			case <-stop:
-				// Encerrar a goroutine ao receber um sinal de interrupção
-				return
-			default:
-				// Receber mensagens do Pub/Sub
-				err := subscription.Receive(ctx, func(ctx context.Context, msg *pubsub.Message) {
-					// Processar a mensagem recebida
-					UrlToConvert := string(msg.Data)
-
-					urlMsg <- UrlToConvert
-
-					fmt.Printf("Mensagem recebida: %s\n", string(msg.Data))
-
-					// Confirmar o recebimento da mensagem
-					msg.Ack()
-				})
-				if err != nil {
-					log.Printf("Erro ao receber mensagens: %v", err)
-				}
-			}
+	// Configure a função de manipulação de mensagens do Pub/Sub
+	err = subscription.Receive(ctx, func(ctx context.Context, msg *pubsub.Message) {
+		// Processar a mensagem recebida
+		fmt.Printf("Mensagem recebida: %s\n", string(msg.Data))
+		zeus.Process(string(msg.Data))
+		// Confirmar o recebimento da mensagem
+		msg.Ack()
+		if err != nil {
+			log.Printf("Erro ao confirmar o recebimento da mensagem: %v", err)
 		}
-	}()
-
-	// Inicie o servidor HTTP para ouvir na porta 8080
-	go func() {
-		http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-			fmt.Fprint(w, "Hello, Cloud Run!")
-		})
-		fmt.Println("<<< CEIFADOR: Started :8080 >>>")
-		if err := http.ListenAndServe(":8001", nil); err != nil {
-			log.Fatalf("Falha ao iniciar o servidor HTTP: %v", err)
-		}
-	}()
-
-	for msg := range urlMsg {
-		fmt.Println("<< CEIFADOR: Verificando mensagens no channel >>>")
-		sender.SendMessageToAPI(msg)
-		log.Printf("<<< CEIFADOR: SendMessageToAPI - %s >>>", msg)
+	})
+	if err != nil {
+		log.Fatalf("Erro ao receber mensagens do Pub/Sub: %v", err)
 	}
+}
 
-	fmt.Println("<< CEIFADOR: Aguardando mensagens... >>>")
-	<-stop
+func handler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprint(w, "Serviço Cloud Run em execução!")
+}
 
-	// Feche o cliente do Pub/Sub ao final da execução
-	if err := client.Close(); err != nil {
-		log.Printf("Erro ao fechar o cliente do Pub/Sub: %v", err)
-	}
+func init() {
+	http.HandleFunc("/", handler)
 }
