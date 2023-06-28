@@ -90,7 +90,7 @@ func main() {
 			fmt.Fprint(w, "Hello, Cloud Run!")
 		})
 		fmt.Println("<<< CEIFADOR: Started :8080 >>>")
-		if err := http.ListenAndServe(":8080", nil); err != nil {
+		if err := http.ListenAndServe(":8001", nil); err != nil {
 			log.Fatalf("Falha ao iniciar o servidor HTTP: %v", err)
 		}
 	}()
@@ -98,6 +98,7 @@ func main() {
 	for msg := range urlMsg {
 		fmt.Println("<< CEIFADOR: Verificando mensagens no channel >>>")
 		sender.SendMessageToAPI(msg)
+		log.Printf("<<< CEIFADOR: SendMessageToAPI - %s >>>", msg)
 	}
 
 	fmt.Println("<< CEIFADOR: Aguardando mensagens... >>>")
