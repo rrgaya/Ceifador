@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"os"
 	"os/signal"
@@ -10,6 +9,8 @@ import (
 	"time"
 
 	"cloud.google.com/go/pubsub"
+	"github.com/rrgaya/ceifador/internal/usecase"
+	"github.com/rrgaya/ceifador/pkg/zeus"
 )
 
 func Ceifador() {
@@ -42,24 +43,19 @@ func Ceifador() {
 		log.Fatalf("Falha ao criar a assinatura: %v", err)
 	}
 
-	// Capture os sinais do sistema para interromper a execução do programa
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, syscall.SIGINT, syscall.SIGTERM)
 
-	// Inicie a goroutine para receber mensagens
 	go func() {
 		for {
 			select {
 			case <-stop:
-				// Encerrar a goroutine ao receber um sinal de interrupção
 				return
 			default:
-				// Receber mensagens do Pub/Sub
 				err := subscription.Receive(ctx, func(ctx context.Context, msg *pubsub.Message) {
-					// Processar a mensagem recebida
-					fmt.Printf("Mensagem recebida: %s\n", string(msg.Data))
-
-					// Confirmar o recebimento da mensagem
+					URI_PROCESS := string(msg.Data)
+					urlLanding, transactionID := usecase.GetURLCampaign(URI_PROCESS)
+					zeus.Process(urlLanding, transactionID)
 					msg.Ack()
 				})
 				if err != nil {
@@ -68,11 +64,7 @@ func Ceifador() {
 			}
 		}
 	}()
-
-	fmt.Println("Aguardando mensagens... Pressione Ctrl+C para sair.")
 	<-stop
-
-	// Fechar o cliente do Pub/Sub ao final da execução
 	client.Close()
 
 }
