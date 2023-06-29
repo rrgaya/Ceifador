@@ -39,7 +39,7 @@ func main() {
 	}
 
 	log.Printf("Serviço Cloud Run em execução na porta 8001")
-	if err := http.ListenAndServe(":8001	", nil); err != nil {
+	if err := http.ListenAndServe(":8080	", nil); err != nil {
 		log.Fatalf("Erro ao iniciar o servidor HTTP: %v", err)
 	}
 }
