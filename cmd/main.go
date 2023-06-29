@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"net/http"
 
@@ -49,7 +48,6 @@ func main() {
 
 func handler(w http.ResponseWriter, r *http.Request) {
 	log.Println("### CEIFADOR ### >>> HANDLER")
-	fmt.Fprint(w, "Serviço Cloud Run em execução!")
 }
 
 func init() {
