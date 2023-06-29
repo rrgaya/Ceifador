@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"cloud.google.com/go/pubsub"
+	"github.com/rrgaya/ceifador/internal/usecase"
 	"github.com/rrgaya/ceifador/pkg/zeus"
 )
 
@@ -27,7 +28,9 @@ func main() {
 
 		fmt.Printf("Mensagem recebida: %s\n", string(msg.Data))
 
-		zeus.Process(string(msg.Data))
+		URI_PROCESS := string(msg.Data)
+		urlLanding, transactionID := usecase.GetURLCampaign(URI_PROCESS)
+		zeus.Process(urlLanding, transactionID)
 
 		msg.Ack()
 		if err != nil {

@@ -8,7 +8,7 @@ import (
 	"github.com/chromedp/chromedp"
 )
 
-func Process(urlToProcess string) {
+func Process(ladingpage string, IDTransação string) {
 	log.Printf("### CEIFADOR ### >>> INIT PROCESS")
 	ctxTimeout, cancelTimeout := context.WithTimeout(context.Background(), time.Second*10)
 	defer cancelTimeout()
@@ -17,7 +17,7 @@ func Process(urlToProcess string) {
 	defer cancel()
 
 	err := chromedp.Run(ctx,
-		chromedp.Navigate(urlToProcess),
+		chromedp.Navigate(ladingpage),
 		chromedp.WaitVisible(".cta__if.button.expanded", chromedp.ByQuery),
 		chromedp.Click(".cta__if.button.expanded", chromedp.ByQuery),
 	)
@@ -25,5 +25,5 @@ func Process(urlToProcess string) {
 		log.Printf("### CEIFADOR ### >>> %q", err)
 	}
 	time.Sleep(time.Second * 2)
-	log.Printf("### CEIFADOR ### >>> CONVERSÂO FINALIZADA COM SUCESSO")
+	log.Printf("### CEIFADOR ### >>> CONVERSÂO FINALIZADA COM SUCESSO: %s", IDTransação)
 }
