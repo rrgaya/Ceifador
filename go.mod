@@ -5,6 +5,7 @@ go 1.20
 require (
 	cloud.google.com/go/pubsub v1.32.0
 	github.com/chromedp/chromedp v0.9.1
+	github.com/google/uuid v1.3.0
 )
 
 require (

@@ -12,26 +12,23 @@ import (
 
 func main() {
 	log.Println("### CEIFADOR ### >>> MAIN")
-	// Defina o ID do projeto do Google Cloud e o nome da assinatura do Pub/Sub
 	projectID := "conversion-toolkit"
 	subscriptionName := "MySub"
 
-	// Crie um cliente do Pub/Sub
 	ctx := context.Background()
 	client, err := pubsub.NewClient(ctx, projectID)
 	if err != nil {
 		log.Fatalf("Falha ao criar o cliente do Pub/Sub: %v", err)
 	}
 
-	// Crie uma referência para a assinatura do Pub/Sub
 	subscription := client.Subscription(subscriptionName)
 
-	// Configure a função de manipulação de mensagens do Pub/Sub
 	err = subscription.Receive(ctx, func(ctx context.Context, msg *pubsub.Message) {
-		// Processar a mensagem recebida
+
 		fmt.Printf("Mensagem recebida: %s\n", string(msg.Data))
+
 		zeus.Process(string(msg.Data))
-		// Confirmar o recebimento da mensagem
+
 		msg.Ack()
 		if err != nil {
 			log.Printf("Erro ao confirmar o recebimento da mensagem: %v", err)
@@ -42,7 +39,7 @@ func main() {
 	}
 
 	log.Printf("Serviço Cloud Run em execução na porta 8001")
-	if err := http.ListenAndServe(":8080	", nil); err != nil {
+	if err := http.ListenAndServe(":8001	", nil); err != nil {
 		log.Fatalf("Erro ao iniciar o servidor HTTP: %v", err)
 	}
 }
