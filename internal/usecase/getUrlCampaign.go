@@ -2,7 +2,6 @@ package usecase
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"net/url"
 )
@@ -42,6 +41,5 @@ func GetURLCampaign(urlGo2Cloud string) (urlCampaign string, transactionID strin
 	defer resp.Body.Close()
 
 	transactionID = GetTransactionID(resp.Request.URL.String())
-	log.Printf(">>>>>>>>>>>>>>>>>>> ID: %s \n", transactionID)
 	return resp.Request.URL.String(), transactionID
 }

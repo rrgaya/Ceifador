@@ -25,9 +25,6 @@ func main() {
 	subscription := client.Subscription(subscriptionName)
 
 	err = subscription.Receive(ctx, func(ctx context.Context, msg *pubsub.Message) {
-
-		fmt.Printf("Mensagem recebida: %s\n", string(msg.Data))
-
 		URI_PROCESS := string(msg.Data)
 		log.Printf("### CEIFADOR ### >>> URI_PROCESS: %s \n", URI_PROCESS)
 		urlLanding, transactionID := usecase.GetURLCampaign(URI_PROCESS)
