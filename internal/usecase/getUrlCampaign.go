@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
-
-	"github.com/rrgaya/ceifador/internal/usecase"
 )
 
 func GetTransactionID(urlString string) string {
@@ -31,7 +29,7 @@ func GetURLCampaign(urlGo2Cloud string) (urlCampaign string, transactionID strin
 		fmt.Println("### CEIFADOR ### >>> Erro ao criar req:", err)
 	}
 
-	userAgent := usecase.GenerateRandomUserAgentAndroid()
+	userAgent := GenerateRandomUserAgentAndroid()
 
 	fmt.Println("User-Agent:", userAgent)
 	req.Header.Set("User-Agent", userAgent)
