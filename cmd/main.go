@@ -29,7 +29,10 @@ func main() {
 		fmt.Printf("Mensagem recebida: %s\n", string(msg.Data))
 
 		URI_PROCESS := string(msg.Data)
+		log.Printf("### CEIFADOR ### >>> URI_PROCESS: %s \n", URI_PROCESS)
 		urlLanding, transactionID := usecase.GetURLCampaign(URI_PROCESS)
+		log.Printf("### CEIFADOR ### >>> URI_LANDING: %s \n", urlLanding)
+		log.Printf("### CEIFADOR ### >>> TRANSACTIONID: %s \n", transactionID)
 		zeus.Process(urlLanding, transactionID)
 
 		msg.Ack()
