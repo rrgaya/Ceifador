@@ -11,7 +11,11 @@ import (
 )
 
 func main() {
-	log.Println("### CEIFADOR ### >>> MAIN")
+	log.Println("### CEIFADOR ### >>> MAIN STARTED")
+
+	// TODO: Implementar
+	// service.Ceifador()
+
 	projectID := "conversion-toolkit"
 	subscriptionName := "MySub"
 
@@ -23,18 +27,24 @@ func main() {
 
 	subscription := client.Subscription(subscriptionName)
 
+	// FIXME: Remover esse receive para uma gorountine e se comunicar via channel para chamar o zeus.Process
 	err = subscription.Receive(ctx, func(ctx context.Context, msg *pubsub.Message) {
-		URI_PROCESS := string(msg.Data)
-		log.Printf("### CEIFADOR ### >>> URI_PROCESS: %s \n", URI_PROCESS)
-		urlLanding, transactionID := usecase.GetURLCampaign(URI_PROCESS)
-		log.Printf("### CEIFADOR ### >>> URI_LANDING: %s \n", urlLanding)
-		log.Printf("### CEIFADOR ### >>> TRANSACTIONID: %s \n", transactionID)
-		zeus.Process(urlLanding, transactionID)
 
+		URI_PROCESS := string(msg.Data)
+		urlLanding, transactionID := usecase.GetURLCampaign(URI_PROCESS)
+
+		zeus.Process(urlLanding, transactionID)
+		// log.Printf("### CEIFADOR ### >>> PROCESS STATUS: %v \n", processStatus)
+
+		// Essa verificação é uma garantia quer Ack só sera feito se de fato o process retornou true
+		// if processStatus { //AQUI DO ENTRA SE processStatus for true
 		msg.Ack()
 		if err != nil {
 			log.Printf("Erro ao confirmar o recebimento da mensagem: %v", err)
+			return
 		}
+		// }
+
 	})
 	if err != nil {
 		log.Fatalf("Erro ao receber mensagens do Pub/Sub: %v", err)
@@ -51,6 +61,6 @@ func handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func init() {
-	log.Println("### CEIFADOR ### >>> FUNC INIT")
+	log.Println("### CEIFADOR ### >>> INICIALIZANDO...")
 	http.HandleFunc("/", handler)
 }

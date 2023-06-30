@@ -16,6 +16,7 @@ func Process(ladingpage string, IDTransação string) {
 	ctx, cancel := chromedp.NewContext(ctxTimeout)
 	defer cancel()
 
+	log.Printf("### CEIFADOR ### >>> CHROME RUN PARA: %s \n", IDTransação)
 	err := chromedp.Run(ctx,
 		chromedp.Navigate(ladingpage),
 		chromedp.WaitVisible(".cta__if.button.expanded", chromedp.ByQuery),
@@ -24,6 +25,11 @@ func Process(ladingpage string, IDTransação string) {
 	if err != nil {
 		log.Printf("### CEIFADOR ERROR ### >>> %q", err)
 	}
+
+	log.Printf("### CEIFADOR ### >>> ESPERANDO 5 SEG DEPOIS DO RUN \n")
 	time.Sleep(time.Second * 5)
-	log.Printf("### CEIFADOR ### >>> CONVERSÂO FINALIZADA COM SUCESSO: %s", IDTransação)
+
+	log.Printf("### CEIFADOR ### >>> LANDINGPAGE: %s \n", ladingpage)
+	log.Printf("### CEIFADOR ### >>> TRANSACTION_ID: %s \n", IDTransação)
+	log.Printf("### CEIFADOR ### >>> NEW CONVERSION: %s", IDTransação)
 }
