@@ -10,7 +10,7 @@ import (
 
 func Process(ladingpage string, IDTransação string) {
 	log.Printf("### CEIFADOR ### >>> INIT PROCESS")
-	ctxTimeout, cancelTimeout := context.WithTimeout(context.Background(), time.Second*10)
+	ctxTimeout, cancelTimeout := context.WithTimeout(context.Background(), time.Second*30)
 	defer cancelTimeout()
 
 	ctx, cancel := chromedp.NewContext(ctxTimeout)
