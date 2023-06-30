@@ -24,6 +24,7 @@ func Process(ladingpage string, IDTransação string) {
 	)
 	if err != nil {
 		log.Printf("### CEIFADOR ERROR ### >>> %q", err)
+		log.Fatalln(err)
 	}
 
 	log.Printf("### CEIFADOR ### >>> ESPERANDO 5 SEG DEPOIS DO RUN \n")
@@ -32,4 +33,5 @@ func Process(ladingpage string, IDTransação string) {
 	log.Printf("### CEIFADOR ### >>> LANDINGPAGE: %s \n", ladingpage)
 	log.Printf("### CEIFADOR ### >>> TRANSACTION_ID: %s \n", IDTransação)
 	log.Printf("### CEIFADOR ### >>> NEW CONVERSION: %s", IDTransação)
+
 }
