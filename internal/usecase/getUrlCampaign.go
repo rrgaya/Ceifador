@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"net/url"
 )
@@ -14,8 +15,6 @@ func GetTransactionID(urlString string) string {
 
 	queryParam := u.Query()
 	transactionID := queryParam.Get("transaction_id")
-	fmt.Println("### CEIFADOR ### >>> TransactionID: ", transactionID)
-
 	return transactionID
 }
 
@@ -26,17 +25,15 @@ func GetURLCampaign(urlGo2Cloud string) (urlCampaign string, transactionID strin
 
 	req, err := http.NewRequest("GET", URL.String(), nil)
 	if err != nil {
-		fmt.Println("### CEIFADOR ERROR ### >>> Erro ao criar req:", err)
+		log.Println("### CEIFADOR ERROR ### >>> Erro ao criar req:", err)
 	}
 
 	userAgent := GenerateRandomUserAgentAndroid()
-
-	fmt.Println("User-Agent:", userAgent)
 	req.Header.Set("User-Agent", userAgent)
 
 	resp, err := client.Do(req)
 	if err != nil {
-		fmt.Println("### CEIFADOR ERROR ### >>> Erro ao fazer DO da REQUEST:", err)
+		log.Println("### CEIFADOR ERROR ### >>> Erro ao fazer DO da REQUEST:", err)
 	}
 	defer resp.Body.Close()
 
