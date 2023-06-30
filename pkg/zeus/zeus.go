@@ -24,6 +24,6 @@ func Process(ladingpage string, IDTransação string) {
 	if err != nil {
 		log.Printf("### CEIFADOR ### >>> %q", err)
 	}
-	time.Sleep(time.Second * 2)
+	time.Sleep(time.Second * 5)
 	log.Printf("### CEIFADOR ### >>> CONVERSÂO FINALIZADA COM SUCESSO: %s", IDTransação)
 }

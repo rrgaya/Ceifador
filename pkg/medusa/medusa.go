@@ -13,7 +13,6 @@ func main() {
 	proxy := goproxy.NewProxyHttpServer()
 	proxy.OnRequest(goproxy.DstHostIs("example.com")).DoFunc(
 		func(r *http.Request, ctx *goproxy.ProxyCtx) (*http.Request, *http.Response) {
-			// Modifica o IP de origem da solicitação
 			originalURL := r.URL
 			proxyURL, _ := url.Parse("http://new-ip-address:port") // Substitua "new-ip-address" pelo novo IP desejado
 			r.URL.Scheme = proxyURL.Scheme
