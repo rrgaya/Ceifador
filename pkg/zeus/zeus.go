@@ -22,7 +22,7 @@ func Process(ladingpage string, IDTransação string) {
 		chromedp.Click(".cta__if.button.expanded", chromedp.ByQuery),
 	)
 	if err != nil {
-		log.Printf("### CEIFADOR ### >>> %q", err)
+		log.Printf("### CEIFADOR ERROR ### >>> %q", err)
 	}
 	time.Sleep(time.Second * 5)
 	log.Printf("### CEIFADOR ### >>> CONVERSÂO FINALIZADA COM SUCESSO: %s", IDTransação)

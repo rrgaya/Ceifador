@@ -26,7 +26,7 @@ func GetURLCampaign(urlGo2Cloud string) (urlCampaign string, transactionID strin
 
 	req, err := http.NewRequest("GET", URL.String(), nil)
 	if err != nil {
-		fmt.Println("### CEIFADOR ### >>> Erro ao criar req:", err)
+		fmt.Println("### CEIFADOR ERROR ### >>> Erro ao criar req:", err)
 	}
 
 	userAgent := GenerateRandomUserAgentAndroid()
@@ -36,7 +36,7 @@ func GetURLCampaign(urlGo2Cloud string) (urlCampaign string, transactionID strin
 
 	resp, err := client.Do(req)
 	if err != nil {
-		fmt.Println("### CEIFADOR ### >>> Erro ao fazer DO da REQUEST:", err)
+		fmt.Println("### CEIFADOR ERROR ### >>> Erro ao fazer DO da REQUEST:", err)
 	}
 	defer resp.Body.Close()
 
