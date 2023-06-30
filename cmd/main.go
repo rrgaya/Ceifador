@@ -33,7 +33,7 @@ func main() {
 		URI_PROCESS := string(msg.Data)
 		urlLanding, transactionID := usecase.GetURLCampaign(URI_PROCESS)
 
-		zeus.Process(urlLanding, transactionID)
+		go zeus.Process(urlLanding, transactionID)
 		// log.Printf("### CEIFADOR ### >>> PROCESS STATUS: %v \n", processStatus)
 
 		// Essa verificação é uma garantia quer Ack só sera feito se de fato o process retornou true
