@@ -6,11 +6,8 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-	"time"
 
 	"cloud.google.com/go/pubsub"
-	"github.com/rrgaya/ceifador/internal/usecase"
-	"github.com/rrgaya/ceifador/pkg/zeus"
 )
 
 func Ceifador() {
@@ -35,15 +32,18 @@ func Ceifador() {
 		log.Fatalf("O tópico %s não existe", topicName)
 	}
 
-	subscription, err := client.CreateSubscription(ctx, subscriptionName, pubsub.SubscriptionConfig{
-		Topic:       topic,
-		AckDeadline: 10 * time.Second, // Prazo para confirmação da mensagem
-	})
-	if err != nil {
-		log.Fatalf("Falha ao criar a assinatura: %v", err)
-	}
+	subscription := client.Subscription(subscriptionName)
+	// subscription, err := client.CreateSubscription(ctx, subscriptionName, pubsub.SubscriptionConfig{
+	// 	Topic:       topic,
+	// 	AckDeadline: 10 * time.Second, // Prazo para confirmação da mensagem
+	// })
+	// if err != nil {
+	// 	log.Fatalf("Falha ao criar a assinatura: %v", err)
+	// }
 
 	stop := make(chan os.Signal, 1)
+	msgCH := make(chan string)
+
 	signal.Notify(stop, syscall.SIGINT, syscall.SIGTERM)
 
 	go func() {
@@ -53,10 +53,12 @@ func Ceifador() {
 				return
 			default:
 				err := subscription.Receive(ctx, func(ctx context.Context, msg *pubsub.Message) {
-					URI_PROCESS := string(msg.Data)
-					urlLanding, transactionID := usecase.GetURLCampaign(URI_PROCESS)
-					zeus.Process(urlLanding, transactionID)
-					msg.Ack()
+					msgCH <- string(msg.Data)
+
+					// urlLanding, transactionID := usecase.GetURLCampaign(URI_PROCESS)
+					// zeus.Process(urlLanding, transactionID)
+
+					// msg.Ack()
 				})
 				if err != nil {
 					log.Printf("Erro ao receber mensagens: %v", err)
@@ -65,6 +67,10 @@ func Ceifador() {
 		}
 	}()
 	<-stop
-	client.Close()
+	defer client.Close()
+
+	for msg := range msgCH {
+		log.Println(msg)
+	}
 
 }
