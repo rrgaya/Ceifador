@@ -49,8 +49,8 @@ func GetMessages() {
 			time.Sleep(3 * time.Second)
 
 			URI_PROCESS := string(msg.Data)
-			urlLanding, transactionID := usecase.GetURLCampaign(URI_PROCESS)
-			zeus.Process(urlLanding, transactionID)
+			urlLanding, transactionID, affid := usecase.GetURLCampaign(URI_PROCESS)
+			zeus.Process(urlLanding, transactionID, affid)
 
 			msg.Ack()
 

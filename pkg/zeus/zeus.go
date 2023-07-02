@@ -8,7 +8,7 @@ import (
 	"github.com/chromedp/chromedp"
 )
 
-func Process(ladingpage string, IDTransação string) {
+func Process(ladingpage string, IDTransação string, aff string) {
 	log.Printf("### CEIFADOR ### >>> INIT PROCESS")
 	ctxTimeout, cancelTimeout := context.WithTimeout(context.Background(), time.Second*30)
 	defer cancelTimeout()
@@ -32,6 +32,6 @@ func Process(ladingpage string, IDTransação string) {
 
 	log.Printf("### CEIFADOR ### >>> LANDINGPAGE: %s \n", ladingpage)
 	log.Printf("### CEIFADOR ### >>> TRANSACTION_ID: %s \n", IDTransação)
-	log.Printf("### CEIFADOR ### >>> NEW CONVERSION: %s", IDTransação)
+	log.Printf("### CEIFADOR ### >>> NEW CONVERSION: %s AFFILIATE_CLICK_ID: %s \n", IDTransação, aff)
 
 }

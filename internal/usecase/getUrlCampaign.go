@@ -18,7 +18,16 @@ func GetTransactionID(urlString string) string {
 	return transactionID
 }
 
-func GetURLCampaign(urlGo2Cloud string) (urlCampaign string, transactionID string) {
+func GetAffliateClickID(urlGo2Cloud string) string {
+	uri, err := url.Parse(urlGo2Cloud)
+	if err != nil {
+		log.Println("### CEIFADOR ERROR ### >>> Erro pegar Affliate Click ID:", err)
+	}
+	affliate_clickID := uri.Query().Get("aff_click_id")
+	return affliate_clickID
+}
+
+func GetURLCampaign(urlGo2Cloud string) (urlCampaign string, transactionID string, affID string) {
 	URL, _ := url.Parse(urlGo2Cloud)
 
 	client := &http.Client{}
@@ -38,5 +47,6 @@ func GetURLCampaign(urlGo2Cloud string) (urlCampaign string, transactionID strin
 	defer resp.Body.Close()
 
 	transactionID = GetTransactionID(resp.Request.URL.String())
-	return resp.Request.URL.String(), transactionID
+	affID = GetAffliateClickID(urlGo2Cloud)
+	return resp.Request.URL.String(), transactionID, affID
 }
