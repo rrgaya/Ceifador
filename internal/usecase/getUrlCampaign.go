@@ -5,6 +5,8 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+
+	useragent "github.com/rrgaya/ceifador/pkg/user_agente"
 )
 
 func GetTransactionID(urlString string) string {
@@ -37,7 +39,7 @@ func GetURLCampaign(urlGo2Cloud string) (urlCampaign string, transactionID strin
 		log.Println("### CEIFADOR ERROR ### >>> Erro ao criar req:", err)
 	}
 
-	userAgent := GenerateRandomUserAgentAndroid()
+	userAgent := useragent.RandomizeUserAgent()
 	req.Header.Set("User-Agent", userAgent)
 
 	resp, err := client.Do(req)

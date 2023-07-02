@@ -45,7 +45,7 @@ func GetMessages() {
 		case msg := <-msgCh:
 
 			// Processa a mensagem recebida
-			log.Println("### CEIFADOR ### >>> SLEEP DE 3 SEG")
+			// log.Println("### CEIFADOR ### >>> SLEEP DE 3 SEG")
 			time.Sleep(3 * time.Second)
 
 			URI_PROCESS := string(msg.Data)
