@@ -1,12 +1,11 @@
-package useragent
+package agentfy
 
 import (
-	"fmt"
 	"math/rand"
-	"time"
+	"strconv"
 )
 
-func RandomizeUserAgent() string {
+func GenerateAgentfy() string {
 	userAgents := []string{
 		"Mozilla/5.0 (iPhone; CPU iPhone OS 14_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1 Mobile/15E148 Safari/604.1",
 		"Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1 Mobile/15E148 Safari/604.1",
@@ -82,12 +81,14 @@ func RandomizeUserAgent() string {
 		"Mozilla/5.0 (Linux; Android 11; Pixel 2 XL) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.111 Mobile Safari/537.36",
 	}
 
-	rand.Seed(time.Now().UnixNano())
+	versionFloat := rand.Float64() * 100
+	randomString := strconv.FormatFloat(versionFloat, 'f', -1, 64)
+
 	index := rand.Intn(len(userAgents))
-	return userAgents[index]
+	return userAgents[index] + randomString
 }
 
-func main() {
-	userAgent := RandomizeUserAgent()
-	fmt.Println(userAgent)
-}
+// func main() {
+// 	userAgent := RandomizeUserAgent()
+// 	fmt.Println(userAgent)
+// }
