@@ -27,8 +27,8 @@ func MakeRequest(urlSrc string) int {
 	return resp.StatusCode
 }
 func main() {
-	// uri := "https://apiconversion-od4zxa4f4a-rj.a.run.app/santander?aff_click_id=KWAI-MOBILE-G-1"
-	uri := "https://grupodenegocios.com.br/versao6"
+	uri := "https://apiconversion-od4zxa4f4a-rj.a.run.app/santander?aff_click_id=KWAI-MOBILE-G-1"
+	// uri := "https://grupodenegocios.com.br/versao6"
 	for i := 0; i < 10; i++ {
 		statusCode := MakeRequest(uri)
 
